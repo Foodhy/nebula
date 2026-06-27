@@ -61,6 +61,9 @@ services:
       MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-changeme}
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-changeme}
       MINIO_REGION: ${MINIO_REGION:-us-east-1}
+      # Built-in KMS (no KES container) — enables SSE-S3 bucket auto-encryption.
+      # Format: <key-name>:<base64 32-byte key>. Dev only; prod via Vault/KES.
+      MINIO_KMS_SECRET_KEY: ${MINIO_KMS_SECRET_KEY:-nebula-key:3vqzQAmnI3kE8OHoSX1pALI7AJqe8OTykbIPGtf9uG8=}
     ports:
       - "9000:9000"   # S3 API
       - "9001:9001"   # Console
