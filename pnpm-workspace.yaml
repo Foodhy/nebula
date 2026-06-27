@@ -8,3 +8,4 @@ packages:
   - "packages/*"
 allowBuilds:
   "@biomejs/biome": true
+  esbuild: true
