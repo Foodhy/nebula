@@ -1,0 +1,17 @@
+# Nébula · full dev stack (dev.yml)
+# Extends the dependency stack and will add Nébula services (Atlas, Núcleo, apps)
+# as they are built. For now it is exactly the deps stack.
+#   docker compose -f infra/compose/dev.yml --env-file .env up -d
+
+name: nebula-dev
+
+include:
+  - deps.yml
+
+# Nébula services are added below as they come online, e.g.:
+# services:
+#   nucleo-auth:
+#     build: ../../core/nucleo-auth
+#     depends_on:
+#       postgres: { condition: service_healthy }
+#     networks: [nebula]
