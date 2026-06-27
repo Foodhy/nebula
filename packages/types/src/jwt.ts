@@ -9,7 +9,12 @@ import { Role } from './permissions.js';
 export const JwtClaims = z.object({
   sub: UserId,
   org_id: OrgId,
-  roles: z.array(Role).default([]),
+  // Keycloak emits all realm roles (incl. system roles like offline_access).
+  // Keep only the Nébula org roles; ignore the rest.
+  roles: z
+    .array(z.string())
+    .default([])
+    .transform((arr) => arr.filter((r): r is Role => (Role.options as string[]).includes(r))),
   scopes: z.array(z.string()).default([]),
   exp: z.number().int().positive(),
 });
