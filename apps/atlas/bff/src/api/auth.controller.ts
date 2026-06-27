@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import type { z } from 'zod';
 import { AuthService } from '../application/auth.service.js';
 import { LoginDto, RefreshDto, RegisterDto } from './dto.js';
@@ -23,13 +23,5 @@ export class AuthController {
   @HttpCode(200)
   refresh(@Body(new ZodBody(RefreshDto)) dto: z.infer<typeof RefreshDto>) {
     return this.auth.refresh(dto.refreshToken);
-  }
-}
-
-@Controller('health')
-export class HealthController {
-  @Get()
-  health() {
-    return { status: 'ok' };
   }
 }

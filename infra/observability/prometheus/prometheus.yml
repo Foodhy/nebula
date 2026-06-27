@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Nébula services expose /metrics. Host-run services (dev) are reached via
+  # host.docker.internal; containerized services will be added by name later.
+  - job_name: atlas-bff
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["host.docker.internal:4000"]
+        labels:
+          service: atlas-bff

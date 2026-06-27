@@ -15,6 +15,7 @@
     "@nebula/config": "workspace:*",
     "@nebula/nucleo-auth": "workspace:*",
     "@nebula/nucleo-events": "workspace:*",
+    "@nebula/observability": "workspace:*",
     "@nebula/security": "workspace:*",
     "@nebula/types": "workspace:*",
     "@nestjs/common": "^10.4.15",

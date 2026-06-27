@@ -1,6 +1,6 @@
 # Nébula · full dev stack (dev.yml)
-# Extends the dependency stack and will add Nébula services (Atlas, Núcleo, apps)
-# as they are built. For now it is exactly the deps stack.
+# Extends the dependency stack with the Órbita observability stack, and will add
+# Nébula services as they are containerized.
 #   docker compose -f infra/compose/dev.yml --env-file .env up -d
 
 name: nebula-dev
@@ -8,10 +8,67 @@ name: nebula-dev
 include:
   - deps.yml
 
-# Nébula services are added below as they come online, e.g.:
-# services:
-#   nucleo-auth:
-#     build: ../../core/nucleo-auth
-#     depends_on:
-#       postgres: { condition: service_healthy }
-#     networks: [nebula]
+volumes:
+  prometheus_data:
+  grafana_data:
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks: [nebula]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://localhost:9090/-/healthy || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  tempo:
+    image: grafana/tempo:2.6.1
+    restart: unless-stopped
+    command: ["-config.file=/etc/tempo/tempo.yml"]
+    ports:
+      - "3200:3200"   # Tempo API
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+    volumes:
+      - ../observability/tempo/tempo.yml:/etc/tempo/tempo.yml:ro
+    networks: [nebula]
+
+  loki:
+    image: grafana/loki:3.2.1
+    restart: unless-stopped
+    command: ["-config.file=/etc/loki/loki.yml"]
+    ports:
+      - "3100:3100"
+    volumes:
+      - ../observability/loki/loki.yml:/etc/loki/loki.yml:ro
+    networks: [nebula]
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+    ports:
+      - "3001:3000"
+    volumes:
+      - ../observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - tempo
+      - loki
+    networks: [nebula]
