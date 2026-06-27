@@ -6,6 +6,11 @@ packages:
   - "services/*"
   - "core/*"
   - "packages/*"
+# Force-upgrade transitive deps to patched versions (CVE remediation, ADR/Trivy).
+overrides:
+  multer: "^2.2.0"
+  glob: "^11.1.0"
+
 allowBuilds:
   "@biomejs/biome": true
   "@nestjs/core": false

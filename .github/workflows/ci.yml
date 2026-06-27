@@ -75,7 +75,8 @@ jobs:
       - name: Trivy (filesystem / deps / config)
         run: |
           docker run --rm -v "$PWD:/src" ghcr.io/aquasecurity/trivy:latest \
-            fs --severity HIGH,CRITICAL --exit-code 1 --ignore-unfixed --no-progress /src
+            fs --severity HIGH,CRITICAL --exit-code 1 --ignore-unfixed --no-progress \
+            --ignorefile /src/.trivyignore /src
 
       # --- Dependency advisories (informational; advisories shift daily) ---
       - name: Setup pnpm

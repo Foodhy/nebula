@@ -1,0 +1,8 @@
+# Trivy ignore list — each entry MUST have a rationale (no silent suppression).
+
+# CVE-2026-44902 — OpenTelemetry auto-instrumentations/sdk-node: DoS in the
+# Prometheus EXPORTER path via malformed HTTP. Nébula does not use OTel's
+# Prometheus exporter (metrics are served via prom-client; only the OTLP *trace*
+# exporter is used), so this path is not reachable. The fix requires a coordinated
+# OTel SDK major upgrade — tracked as a follow-up before F1 ships a public surface.
+CVE-2026-44902
