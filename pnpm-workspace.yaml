@@ -1,0 +1,10 @@
+# pnpm workspace definition.
+# Empty dirs (no package.json) are ignored by pnpm until a package is added.
+packages:
+  - "apps/*/web"
+  - "apps/*/bff"
+  - "services/*"
+  - "core/*"
+  - "packages/*"
+allowBuilds:
+  "@biomejs/biome": true

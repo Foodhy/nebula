@@ -1,0 +1,12 @@
+[project]
+name = "nebula"
+version = "0.0.0"
+description = "Nébula — shared Python libraries workspace"
+requires-python = ">=3.12"
+
+[tool.uv.workspace]
+members = ["libs/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

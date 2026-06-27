@@ -1,0 +1,31 @@
+version = 1
+revision = 3
+requires-python = ">=3.12"
+
+[manifest]
+members = [
+    "nebula",
+    "nebula-common",
+    "nebula-events",
+    "nebula-security",
+]
+
+[[package]]
+name = "nebula"
+version = "0.0.0"
+source = { virtual = "." }
+
+[[package]]
+name = "nebula-common"
+version = "0.0.0"
+source = { virtual = "libs/nebula_common" }
+
+[[package]]
+name = "nebula-events"
+version = "0.0.0"
+source = { virtual = "libs/nebula_events" }
+
+[[package]]
+name = "nebula-security"
+version = "0.0.0"
+source = { virtual = "libs/nebula_security" }

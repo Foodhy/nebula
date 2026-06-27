@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Secrets — only .env.example is committed (see docs/04-security.md)
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Turborepo
+.turbo/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.uv/
+
+# Test / coverage
+coverage/
+.pytest_cache/
+
+# OS / editor
+.DS_Store
+*.log
+.idea/
+.vscode/

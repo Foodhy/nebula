@@ -1,0 +1,9 @@
+[project]
+name = "nebula-security"
+version = "0.0.0"
+description = "Nébula shared Python security lib (hashing, encryption, JWT) — skeleton"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv]
+package = false

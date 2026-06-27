@@ -1,0 +1,9 @@
+[project]
+name = "nebula-common"
+version = "0.0.0"
+description = "Nébula shared Python utilities (logging, settings, health/metrics) — skeleton"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv]
+package = false
