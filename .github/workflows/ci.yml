@@ -63,7 +63,7 @@ jobs:
       - name: gitleaks (secret scan)
         run: |
           docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest \
-            detect --source=/repo --redact --no-banner --verbose
+            detect --source=/repo --config=/repo/.gitleaks.toml --redact --no-banner --verbose
 
       # --- SAST (blocking) ---
       - name: Semgrep (SAST)

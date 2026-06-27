@@ -1,0 +1,13 @@
+# gitleaks config — extends the default ruleset, allowlists dev-only placeholders.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Dev-only placeholder secrets. NOT real credentials; prod values come from Vault/SOPS."
+regexes = [
+  # MinIO built-in KMS dev key (base64). Documented placeholder in .env.example/compose.
+  '''3vqzQAmnI3kE8OHoSX1pALI7AJqe8OTykbIPGtf9uG8=''',
+]
+paths = [
+  '''\.env\.example''',
+]
