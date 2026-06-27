@@ -185,6 +185,16 @@ export class KeycloakHttpAdapter implements IdentityProvider {
     return userId;
   }
 
+  async enrollMfa(userId: string): Promise<void> {
+    // Attach the CONFIGURE_TOTP required action; Keycloak's login UI then drives
+    // the QR/secret + first-code verification on next login.
+    const { res } = await this.admin(`/users/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ requiredActions: ['CONFIGURE_TOTP'] }),
+    });
+    if (!res.ok) throw new Error(`Enroll MFA failed: ${res.status}`);
+  }
+
   async listMembers(orgId: string): Promise<Member[]> {
     // Keycloak attribute search: q=org_id:<value>
     const { res, body } = await this.admin<KcUser[]>(

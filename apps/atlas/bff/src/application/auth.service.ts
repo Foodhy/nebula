@@ -60,4 +60,8 @@ export class AuthService {
   listMembers(orgId: string): Promise<Member[]> {
     return this.idp.listMembers(orgId);
   }
+
+  enrollMfa(userId: string): Promise<void> {
+    return this.idp.enrollMfa(userId);
+  }
 }

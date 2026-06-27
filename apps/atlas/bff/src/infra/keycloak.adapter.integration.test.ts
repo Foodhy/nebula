@@ -103,4 +103,26 @@ describe('Atlas / Keycloak identity (integration)', () => {
     expect(members.some((m) => m.username === userA)).toBe(true);
     expect(members.some((m) => m.username === userB)).toBe(false);
   });
+
+  it('enrollMfa sets the CONFIGURE_TOTP required action on the user', async () => {
+    if (!keycloakUp) return;
+    await adapter.enrollMfa(orgA.userId);
+
+    // Read the user back via the admin API to confirm the required action stuck.
+    const adminRes = await fetch(`${BASE_URL}/realms/${REALM}/protocol/openid-connect/token`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: 'nebula-apps',
+        client_secret: 'changeme',
+      }),
+    });
+    const adminToken = ((await adminRes.json()) as { access_token: string }).access_token;
+    const userRes = await fetch(`${BASE_URL}/admin/realms/${REALM}/users/${orgA.userId}`, {
+      headers: { authorization: `Bearer ${adminToken}` },
+    });
+    const user = (await userRes.json()) as { requiredActions?: string[] };
+    expect(user.requiredActions).toContain('CONFIGURE_TOTP');
+  });
 });

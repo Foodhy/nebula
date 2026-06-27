@@ -2,6 +2,7 @@ import { NucleoAuthModule } from '@nebula/nucleo-auth';
 import { ObservabilityModule } from '@nebula/observability';
 import { type DynamicModule, Module } from '@nestjs/common';
 import { AuthController } from './api/auth.controller.js';
+import { MfaController } from './api/mfa.controller.js';
 import { OrgsController } from './api/orgs.controller.js';
 import { AuthService } from './application/auth.service.js';
 import { EVENT_PUBLISHER, type EventPublisher } from './application/events.port.js';
@@ -39,7 +40,7 @@ export class AppModule {
           config: { issuer, audience: deps.env.OIDC_CLIENT_ID },
         }),
       ],
-      controllers: [AuthController, OrgsController],
+      controllers: [AuthController, MfaController, OrgsController],
       providers: [
         AuthService,
         { provide: IDENTITY_PROVIDER, useValue: idp },

@@ -30,11 +30,12 @@ claim. Passwords are hashed with **Argon2id** (`passwordPolicy hashAlgorithm(arg
 All Keycloak calls sit behind `IdentityProvider` (`KeycloakHttpAdapter`). Apps
 speak standard OIDC; only this adapter knows Keycloak (ADR-0004 exit plan).
 
-## MFA (status)
+## MFA
 
-TOTP is enabled at the realm (`otpPolicy=totp`, `CONFIGURE_TOTP` action available)
-and can be made **mandatory per org** by attaching the required action. A
-dedicated `/auth/mfa/enroll` UX is deferred beyond F0.
+TOTP is enabled at the realm (`otpPolicy=totp`). `POST /auth/mfa/enroll`
+(JWT-guarded) attaches the `CONFIGURE_TOTP` required action to the **caller's own**
+user; Keycloak's login UI then shows the QR and verifies the first code at next
+login. Can be made mandatory per org by enrolling members on join.
 
 ## Run
 

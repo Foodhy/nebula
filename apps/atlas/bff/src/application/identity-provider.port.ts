@@ -22,6 +22,8 @@ export interface IdentityProvider {
   invite(input: InviteInput): Promise<string>;
   /** List members of an org. */
   listMembers(orgId: string): Promise<Member[]>;
+  /** Require the user to set up TOTP MFA at next login (CONFIGURE_TOTP). */
+  enrollMfa(userId: string): Promise<void>;
 }
 
 export const IDENTITY_PROVIDER = Symbol('NEBULA_IDENTITY_PROVIDER');
