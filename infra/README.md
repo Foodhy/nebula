@@ -45,3 +45,19 @@ docker compose -f infra/compose/deps.yml logs -f keycloak
   `infra/keycloak/` (`--import-realm`). The `realm-nebula.json` is added in Task 4.
 - **Secrets:** dev only via `.env`. Production values come from Vault/SOPS — never commit a real `.env`.
 - **Reset everything** (wipes data volumes): `docker compose -f infra/compose/deps.yml down -v`.
+
+## Dev gotchas
+
+- **Keycloak admin console "HTTPS required"** — the `master` realm ships with
+  `sslRequired=external`. For local HTTP dev, disable it once after first boot
+  (lost only on a `down -v`):
+  ```bash
+  docker exec nebula-deps-keycloak-1 /opt/keycloak/bin/kcadm.sh config credentials \
+    --server http://localhost:8080 --realm master --user admin --password admin
+  docker exec nebula-deps-keycloak-1 /opt/keycloak/bin/kcadm.sh update realms/master -s sslRequired=NONE
+  ```
+- **Atlas BFF (`:4000`) is a JSON API, not a web page** — `/` returns 404 by
+  design. Use `/health`, `/metrics`, `/auth/*`. Start it with
+  `pnpm --filter @nebula/atlas-bff start` (the deps stack must be up).
+- **Meilisearch dashboard (`:7700`)** asks for an admin API key — it is
+  `MEILI_MASTER_KEY` from `.env` (dev: `changeme`).
