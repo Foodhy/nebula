@@ -73,13 +73,9 @@ jobs:
 
       # --- Vulnerabilities (blocking on HIGH/CRITICAL) ---
       - name: Trivy (filesystem / deps / config)
-        uses: aquasecurity/trivy-action@0.36.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: HIGH,CRITICAL
-          exit-code: "1"
-          ignore-unfixed: true
+        run: |
+          docker run --rm -v "$PWD:/src" aquasecurity/trivy:latest \
+            fs --severity HIGH,CRITICAL --exit-code 1 --ignore-unfixed --no-progress /src
 
       # --- Dependency advisories (informational; advisories shift daily) ---
       - name: Setup pnpm
