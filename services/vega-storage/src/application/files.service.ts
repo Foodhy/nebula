@@ -128,6 +128,10 @@ export class FilesService {
     return result.file;
   }
 
+  search(orgId: string, userId: string, q: string): Promise<FileEntity[]> {
+    return this.tx.run(orgId, (db) => this.files.search(db, userId, q));
+  }
+
   get(orgId: string, userId: string, fileId: string): Promise<FileEntity> {
     return this.tx.run(orgId, async (db) => {
       const { file } = await this.loadOwned(db, orgId, fileId, userId, 'view');

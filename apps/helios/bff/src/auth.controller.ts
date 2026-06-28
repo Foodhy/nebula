@@ -2,14 +2,13 @@ import { AT_COOKIE, RT_COOKIE, bearerFrom, cookieOptions, decodeJwt } from '@neb
 import { Body, Controller, Get, HttpCode, Inject, Post, Req, Res } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { z } from 'zod';
-import type { VegaBffEnv } from './config.js';
-import { ENV } from './tokens.js';
+import { ENV, type HeliosBffEnv } from './config.js';
 
 const LoginDto = z.object({ username: z.string().min(1), password: z.string().min(1) });
 
 @Controller('api/auth')
 export class AuthController {
-  constructor(@Inject(ENV) private readonly env: VegaBffEnv) {}
+  constructor(@Inject(ENV) private readonly env: HeliosBffEnv) {}
 
   @Post('login')
   @HttpCode(200)

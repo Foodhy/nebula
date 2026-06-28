@@ -118,6 +118,19 @@ export class PgFileRepo implements FileRepo {
     return rows[0] ? toFile(rows[0]) : null;
   }
 
+  async search(db: Querier, userId: string, q: string, limit = 50): Promise<FileEntity[]> {
+    const { rows } = await db.query<FileRow>(
+      `SELECT * FROM files f
+       WHERE f.status = 'active' AND f.name ILIKE $1
+         AND (f.owner_id = $2 OR EXISTS (
+           SELECT 1 FROM shares s WHERE s.resource_id = f.id AND s.grantee_id = $2::text
+             AND (s.expires_at IS NULL OR s.expires_at > now())))
+       ORDER BY f.name LIMIT $3`,
+      [`%${q}%`, userId, limit],
+    );
+    return rows.map(toFile);
+  }
+
   async update(
     db: Querier,
     id: string,

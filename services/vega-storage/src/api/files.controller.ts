@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import type { z } from 'zod';
@@ -40,6 +41,13 @@ export class FilesController {
   uploadComplete(@Param('id') id: string, @CurrentUser() user?: AuthContext) {
     const { orgId, userId } = this.ctx(user);
     return this.files.uploadComplete(orgId, userId, id);
+  }
+
+  // Static route before ':id' so "search" is not captured as an id.
+  @Get('search')
+  search(@Query('q') q = '', @CurrentUser() user?: AuthContext) {
+    const { orgId, userId } = this.ctx(user);
+    return this.files.search(orgId, userId, q);
   }
 
   @Get(':id')

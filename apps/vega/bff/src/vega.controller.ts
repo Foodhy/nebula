@@ -1,3 +1,4 @@
+import { bearerFrom, forward } from '@nebula/bff-kit';
 import {
   BadRequestException,
   Body,
@@ -17,7 +18,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request, Response } from 'express';
 import type { VegaBffEnv } from './config.js';
 import { ENV } from './tokens.js';
-import { bearerFrom, forward } from './upstream.js';
 
 interface UploadedFileT {
   originalname: string;

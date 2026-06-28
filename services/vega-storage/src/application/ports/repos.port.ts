@@ -14,6 +14,8 @@ export interface NewFile {
 export interface FileRepo {
   create(db: Querier, file: NewFile): Promise<FileEntity>;
   findById(db: Querier, id: string): Promise<FileEntity | null>;
+  /** Active files matching `q` by name that `userId` owns or has a share for. */
+  search(db: Querier, userId: string, q: string, limit?: number): Promise<FileEntity[]>;
   update(
     db: Querier,
     id: string,

@@ -16,6 +16,3 @@ export type VegaBffEnv = z.infer<typeof VegaBffEnv>;
 export function loadVegaBffEnv(source?: Record<string, string | undefined>): VegaBffEnv {
   return loadConfig(VegaBffEnv, source);
 }
-
-export const AT_COOKIE = 'vega_at';
-export const RT_COOKIE = 'vega_rt';

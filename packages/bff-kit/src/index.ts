@@ -1,6 +1,13 @@
 import { UnauthorizedException } from '@nestjs/common';
 import type { Request, Response } from 'express';
-import { AT_COOKIE } from './config.js';
+
+/** Shared session cookies — same name across BFFs so login is org-wide SSO on one host. */
+export const AT_COOKIE = 'nebula_at';
+export const RT_COOKIE = 'nebula_rt';
+
+export function cookieOptions(secure: boolean) {
+  return { httpOnly: true, sameSite: 'lax' as const, secure, path: '/' };
+}
 
 /** Bearer access token from the httpOnly cookie, or 401. */
 export function bearerFrom(req: Request): string {
@@ -20,16 +27,10 @@ export function decodeJwt(token: string): Record<string, unknown> | null {
   }
 }
 
-/** Forward a JSON request to vega-storage with the user's bearer; pipe the response. */
+/** Forward a request to an upstream service with the user's bearer; pipe the response. */
 export async function forward(
   res: Response,
-  opts: {
-    base: string;
-    path: string;
-    method: string;
-    bearer: string;
-    body?: unknown;
-  },
+  opts: { base: string; path: string; method: string; bearer: string; body?: unknown },
 ): Promise<void> {
   const r = await fetch(`${opts.base}${opts.path}`, {
     method: opts.method,

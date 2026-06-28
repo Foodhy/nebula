@@ -159,6 +159,15 @@ describe('vega-storage (integration)', () => {
     await expect(files.trash(ORG_A, A_OTHER, fileId)).rejects.toThrow();
   });
 
+  it('search finds the file by name for the owner, scoped to org', async () => {
+    const hits = await files.search(ORG_A, A_OWNER, 'hello');
+    expect(hits.some((f) => f.id === fileId)).toBe(true);
+    const none = await files.search(ORG_A, A_OWNER, 'zzzznope');
+    expect(none).toHaveLength(0);
+    const otherOrg = await files.search(ORG_B, B_USER, 'hello');
+    expect(otherOrg).toHaveLength(0);
+  });
+
   // MANDATORY cross-tenant isolation (CLAUDE.md #3)
   it('org B cannot read org A file (RLS)', async () => {
     await expect(files.get(ORG_B, B_USER, fileId)).rejects.toBeInstanceOf(NotFoundException);
