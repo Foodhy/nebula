@@ -94,7 +94,12 @@ async function bootstrap(): Promise<void> {
         const docId = snapMatch[1] as string;
         const doc = await store.getDoc(orgId, docId);
         if (!doc) return send(res, 404, { error: 'not found' });
-        const text = docText(buildDoc(await store.loadUpdates(orgId, docId)));
+        // Prefer client-rendered text (Tiptap XmlFragment); fall back to server Y.Text.
+        const body = await readJson(req);
+        const text =
+          typeof body.text === 'string' && body.text.length > 0
+            ? body.text
+            : docText(buildDoc(await store.loadUpdates(orgId, docId)));
         const vegaFileId = await snapshotToVega(
           env.VEGA_STORAGE_URL,
           bearer,

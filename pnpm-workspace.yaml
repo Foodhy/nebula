@@ -16,6 +16,7 @@ allowBuilds:
   "@nestjs/core": false
   cpu-features: false
   esbuild: true
+  leveldown: false
   protobufjs: false
   sharp: true
   ssh2: false
