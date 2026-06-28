@@ -67,9 +67,15 @@ pnpm turbo run test                            # run tests (only what changed)
 
 ## Current phase
 
-**F0 — Foundations.** We are building the monorepo skeleton, infra (Compose deps), Atlas (identity), Núcleo v0, and the testing harness. Do **not** start user-facing apps until F0 exit criteria pass.
+**F2 — Documents + Knowledge (Lyra + Cosmos).** In progress.
 
-Start here: [`docs/09-getting-started.md`](docs/09-getting-started.md) — it has the concrete, ordered F0 task list designed to be executed with Claude Code.
+Done:
+- **F0 — Foundations** ✅ — monorepo, infra (Compose deps), Atlas (Keycloak identity), Núcleo v0 (auth/events/audit), multi-tenant Postgres RLS (`@nebula/db`), observability (Órbita), CI + security pipeline green on `main`.
+- **F1 — MVP Drive** ✅ — `services/vega-storage` (files/folders/versions/sharing, RLS, MinIO SSE per-org, presigned upload), `apps/vega` (bff + Next.js web), `apps/helios` (bff + web: launcher + global file search + SSO via `@nebula/bff-kit`). Cross-tenant isolation tests pass.
+
+Building now: **Lyra** (real-time collaborative docs, Yjs/Tiptap, saves into Vega) and **Cosmos** (notes/wiki). See [`docs/05-roadmap.md`](docs/05-roadmap.md#f2--documents--knowledge--lyra--cosmos).
+
+Running dev ports: Atlas :4000 · vega-storage :4010 · vega-bff :4011 · helios-bff :4020 · vega-web :3000 · helios-web :3001.
 
 ## When in doubt
 
