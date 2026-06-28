@@ -1,0 +1,39 @@
+{
+  "name": "@nebula/lyra-collab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "biome check src",
+    "test": "vitest run",
+    "migrate": "node-pg-migrate --migrations-table pgmigrations_lyra"
+  },
+  "dependencies": {
+    "@nebula/config": "workspace:*",
+    "@nebula/db": "workspace:*",
+    "@nebula/observability": "workspace:*",
+    "@nebula/security": "workspace:*",
+    "@nebula/types": "workspace:*",
+    "jose": "^5.9.6",
+    "lib0": "^0.2.99",
+    "pg": "^8.13.1",
+    "ws": "^8.18.0",
+    "y-protocols": "^1.0.6",
+    "yjs": "^13.6.20",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@nebula/tsconfig": "workspace:*",
+    "@testcontainers/postgresql": "^10.16.0",
+    "@types/node": "^22.10.5",
+    "@types/pg": "^8.11.10",
+    "@types/ws": "^8.5.13",
+    "node-pg-migrate": "^7.9.0",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}
